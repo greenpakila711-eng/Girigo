@@ -1,0 +1,618 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  background:#000;
+  overflow:hidden;
+  font-family:'Noto Sans KR',sans-serif;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+#app{
+  width:100%;
+  min-height:100vh;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* Responsive container */
+
+.screen{
+  display:none;
+  width:100%;
+  max-width:420px;
+  min-height:90vh;
+  border-radius:24px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.screen.active{
+  display:flex;
+}
+
+/* INTRO */
+
+#intro{
+  background:#000;
+  text-align:center;
+  padding:40px 20px;
+}
+
+.welcome-text{
+  color:#c0a0ff;
+  font-size:clamp(14px,3vw,18px);
+  letter-spacing:2px;
+  margin-bottom:10px;
+  opacity:0;
+  animation:fadeIn .5s .3s forwards;
+}
+
+.korean-title{
+  color:#fff;
+  font-size:clamp(34px,8vw,50px);
+  font-weight:700;
+  letter-spacing:6px;
+  opacity:0;
+  animation:fadeIn .5s .7s forwards;
+}
+
+@keyframes fadeIn{
+  to{
+    opacity:1;
+  }
+}
+
+/* MAIN */
+
+#main{
+  background:#000;
+  padding:20px;
+}
+
+.hand-wrap{
+  width:min(70vw,260px);
+  aspect-ratio:3/4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:24px;
+  overflow:hidden;
+  border-radius:18px;
+  position:relative;
+}
+
+.hand-wrap video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:18px;
+}
+
+.open-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.korean-open{
+  color:#fff;
+  font-size:clamp(20px,5vw,28px);
+  font-weight:700;
+}
+
+.english-open{
+  color:#666;
+  font-size:clamp(14px,3vw,18px);
+}
+
+.open-btn{
+  background:transparent;
+  border:1.5px solid #8855ff;
+  color:#8855ff;
+  font-size:15px;
+  padding:8px 20px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.open-btn:hover{
+  background:#8855ff;
+  color:#fff;
+}
+
+/* CAMERA */
+
+#camera{
+  background:#000;
+  overflow:hidden;
+  position:relative;
+}
+
+#videoEl{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+}
+
+.cam-ui{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.cam-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 18px;
+}
+
+.cam-sq{
+  width:18px;
+  height:18px;
+  border:2px solid rgba(255,255,255,.7);
+  border-radius:3px;
+}
+
+.cam-flash{
+  color:rgba(255,255,255,.7);
+  font-size:20px;
+}
+
+.cam-bottom{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding-bottom:22px;
+}
+
+.rec-btn{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:rgba(0,0,0,.45);
+  border:2.5px solid #cc1111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .15s;
+}
+
+.rec-btn:active{
+  transform:scale(.93);
+}
+
+.rec-btn svg{
+  width:44px;
+  height:44px;
+}
+
+.rec-btn.recording{
+  border-color:#ff4444;
+  animation:recPulse .8s infinite;
+}
+
+@keyframes recPulse{
+  0%,100%{
+    box-shadow:0 0 0 0 rgba(255,30,30,.5);
+  }
+
+  50%{
+    box-shadow:0 0 0 8px rgba(255,30,30,0);
+  }
+}
+
+.cam-ui::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0,0,0,.55) 100%
+  );
+  pointer-events:none;
+}
+
+#noCam{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#666;
+  font-size:13px;
+  text-align:center;
+  z-index:3;
+  padding:20px;
+  display:none;
+}
+
+/* RESULT */
+
+#result{
+  background:#000;
+  text-align:center;
+  gap:28px;
+  padding:20px;
+}
+
+.red-hand-wrap{
+  width:min(70vw,260px);
+  aspect-ratio:3/4;
+  overflow:hidden;
+  border-radius:18px;
+}
+
+.red-hand-wrap video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.wish-text{
+  color:#ff2222;
+  font-size:clamp(18px,4vw,24px);
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.back-btn{
+  background:transparent;
+  border:1px solid #444;
+  color:#777;
+  font-size:13px;
+  padding:7px 18px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* MOBILE */
+
+@media (max-width:480px){
+
+  #app{
+    padding:0;
+  }
+
+  .screen{
+    max-width:100%;
+    min-height:100vh;
+    border-radius:0;
+  }
+
+}
+</style>
+
+<div id="app">
+
+  <!-- INTRO -->
+
+  <div id="intro" class="screen active">
+
+    <p class="welcome-text">
+      Welcome to Girigo App
+    </p>
+
+    <p class="korean-title">
+      기리고
+    </p>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div id="main" class="screen">
+
+    <div class="hand-wrap">
+
+      <video
+        id="builtInVideo"
+        src="video.mp4"
+        autoplay
+        loop
+        muted
+        playsinline>
+      </video>
+
+    </div>
+
+    <div class="open-row">
+
+      <span class="korean-open">
+        열기
+      </span>
+
+      <span class="english-open">
+        Open
+      </span>
+
+      <button class="open-btn" onclick="openCamera()">
+        Open
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- CAMERA -->
+
+  <div id="camera" class="screen">
+
+    <video id="videoEl" autoplay playsinline muted></video>
+
+    <div id="noCam">
+      카메라를 찾을 수 없습니다.
+      <br>
+      <small>Camera permission denied</small>
+    </div>
+
+    <div class="cam-ui">
+
+      <div class="cam-top">
+
+        <div class="cam-sq"></div>
+
+        <div class="cam-flash">
+          ⚡
+        </div>
+
+      </div>
+
+      <div class="cam-bottom">
+
+        <div class="rec-btn" id="recBtn" onclick="toggleRecord()">
+
+          <svg viewBox="0 0 44 44" fill="none">
+
+            <path d="M22 8 L14 28 L18 30 L22 14 Z" fill="#cc1111"/>
+
+            <path d="M22 8 L30 28 L26 30 L22 14 Z" fill="#cc1111"/>
+
+            <path d="M14 28 L18 30 L19 36 L13 35 Z" fill="#cc1111"/>
+
+            <path d="M30 28 L26 30 L25 36 L31 35 Z" fill="#cc1111"/>
+
+            <path d="M18 30 L26 30 L25 36 L19 36 Z" fill="#aa0000"/>
+
+            <circle cx="22" cy="7" r="2" fill="#ff4444"/>
+
+          </svg>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- RESULT -->
+
+  <div id="result" class="screen">
+
+    <div class="red-hand-wrap">
+
+      <video
+        src="video.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="filter:hue-rotate(120deg) saturate(2);">
+      </video>
+
+    </div>
+
+    <p class="wish-text">
+      Your wish has been fulfilled
+    </p>
+
+    <button class="back-btn" onclick="restart()">
+      ↺ Restart
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+let stream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+
+function showScreen(id){
+
+  document
+    .querySelectorAll('.screen')
+    .forEach(s => s.classList.remove('active'));
+
+  document
+    .getElementById(id)
+    .classList.add('active');
+}
+
+setTimeout(() => {
+
+  showScreen('main');
+
+}, 2000);
+
+async function openCamera(){
+
+  showScreen('camera');
+
+  try{
+
+    stream = await navigator.mediaDevices.getUserMedia({
+
+      video:{
+        facingMode:'user'
+      },
+
+      audio:true
+    });
+
+    document
+      .getElementById('videoEl')
+      .srcObject = stream;
+
+    document
+      .getElementById('noCam')
+      .style.display = 'none';
+
+  }catch(e){
+
+    document
+      .getElementById('noCam')
+      .style.display = 'block';
+  }
+}
+
+function toggleRecord(){
+
+  if(!isRecording){
+
+    startRecord();
+
+  }else{
+
+    stopRecord();
+  }
+}
+
+function startRecord(){
+
+  if(!stream) return;
+
+  recordedChunks = [];
+
+  try{
+
+    mediaRecorder = new MediaRecorder(stream,{
+      mimeType:'video/webm;codecs=vp8,opus'
+    });
+
+  }catch(e){
+
+    mediaRecorder = new MediaRecorder(stream);
+  }
+
+  mediaRecorder.ondataavailable = e => {
+
+    if(e.data.size > 0){
+
+      recordedChunks.push(e.data);
+    }
+  };
+
+  mediaRecorder.onstop = onRecordStop;
+
+  mediaRecorder.start(100);
+
+  isRecording = true;
+
+  document
+    .getElementById('recBtn')
+    .classList.add('recording');
+}
+
+function stopRecord(){
+
+  if(mediaRecorder && isRecording){
+
+    mediaRecorder.stop();
+
+    isRecording = false;
+
+    document
+      .getElementById('recBtn')
+      .classList.remove('recording');
+  }
+}
+
+function onRecordStop(){
+
+  if(stream){
+
+    stream
+      .getTracks()
+      .forEach(t => t.stop());
+
+    stream = null;
+  }
+
+  if(recordedChunks.length > 0){
+
+    const blob = new Blob(recordedChunks,{
+      type:'video/webm'
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+
+    a.href = url;
+
+    a.download = 'girigo_wish.webm';
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  setTimeout(() => {
+
+    showScreen('result');
+
+  }, 400);
+}
+
+function restart(){
+
+  if(stream){
+
+    stream
+      .getTracks()
+      .forEach(t => t.stop());
+  }
+
+  stream = null;
+
+  isRecording = false;
+
+  showScreen('intro');
+
+  setTimeout(() => {
+
+    showScreen('main');
+
+  }, 2000);
+}
+
+</script>
